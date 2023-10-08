@@ -1,17 +1,13 @@
-INSERT INTO "submitted_documents" (
+INSERT INTO "onchain_documents" (
         "hash",
-        "division_id",
-        "onchain_officer_id",
+        "division_onchain_id",
+        "submitter_address",
         "position_index",
-        "signer_onchain_id"
+        "signers_address"
     )
 VALUES (
         $1,
-        (
-            SELECT "id"
-            FROM "divisions"
-            WHERE "divisions"."onchain_id" = $2
-        ),
+        $2,
         $3,
         $4,
         $5

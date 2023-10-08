@@ -29,7 +29,7 @@ CREATE TABLE "onchain_documents" (
 	"id" BIGSERIAL PRIMARY KEY,
 	"hash" VARCHAR(255) NOT NULL UNIQUE,
 	"division_onchain_id" VARCHAR(255) NOT NULL,
-	"officer_address" VARCHAR(255) NOT NULL,
+	"submitter_address" VARCHAR(255) NOT NULL,
 	"position_index" SMALLINT NOT NULL,
-	"signer_onchain_id" VARCHAR(255) [] NOT NULL
+	"signers_address" VARCHAR(255) [] NOT NULL
 );

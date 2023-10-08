@@ -1,26 +1,12 @@
-INSERT INTO "positions" (
-        "onchain_officer_id",
-        "division_id",
+INSERT INTO "onchain_positions" (
+        "officer_address",
+        "division_onchain_id",
         "position_index",
         "name",
         "role"
     )
-VALUES (
-        (
-            SELECT "id"
-            FROM "onchain_officers" of
-            WHERE of."onchain_address" = $1
-        ),
-        (
-            SELECT "id"
-            FROM "divisions" d
-            WHERE d."onchain_id" = $2
-        ),
-        $3,
-        $4,
-        $5
-    ) ON CONFLICT (
-        "onchain_officer_id",
-        "division_id",
+VALUES ($1, $2, $3, $4, $5) ON CONFLICT (
+        "officer_address",
+        "division_onchain_id",
         "position_index"
     ) DO NOTHING;
