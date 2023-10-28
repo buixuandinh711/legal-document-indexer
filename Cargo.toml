@@ -13,8 +13,6 @@ config = "0.13.1"
 dotenv = "0.15.0"
 tokio = { version = "1", features = ["full"] }
 deadpool-postgres = { version = "0.10.2", features = ["serde"] }
-tokio-pg-mapper = "0.2.0"
-tokio-pg-mapper-derive = "0.2.0"
 tokio-postgres = "0.7.6"
 derive_more = "0.99.17"
 ethers = "2.0.10"

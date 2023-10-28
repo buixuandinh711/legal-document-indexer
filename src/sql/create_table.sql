@@ -1,3 +1,9 @@
+DROP TABLE IF EXISTS "onchain_document_signatures";
+DROP TABLE IF EXISTS "onchain_documents";
+DROP TABLE IF EXISTS "onchain_positions";
+DROP TABLE IF EXISTS "onchain_divisions";
+DROP TABLE IF EXISTS "onchain_officers";
+
 CREATE TABLE "onchain_officers"(
 	"id" BIGSERIAL PRIMARY KEY,
 	"address" VARCHAR(255) NOT NULL UNIQUE,
@@ -25,11 +31,26 @@ CREATE TABLE "onchain_positions"(
 		"position_index"
 	)
 );
-CREATE TABLE "onchain_documents" (
+CREATE TABLE IF NOT EXISTS "onchain_documents" (
 	"id" BIGSERIAL PRIMARY KEY,
-	"hash" VARCHAR(255) NOT NULL UNIQUE,
+	"document_content_hash" VARCHAR(255) NOT NULL UNIQUE,
+	"number" VARCHAR(255) NOT NULL,
+	"name" VARCHAR(255) NOT NULL,
+	"division_id" VARCHAR(255) NOT NULL,
+	"publishedTimestamp" INT NOT NULL,
+	"publisher_address" VARCHAR(255) NOT NULL,
+	"publisher_division_id" VARCHAR(255) NOT NULL,
+	"publisher_position_index" SMALLINT NOT NULL
+);
+CREATE TABLE IF NOT EXISTS "onchain_document_signatures" (
+	"document_content_hash" VARCHAR(255) NOT NULL,
+	"signers_address" VARCHAR(255) NOT NULL,
 	"division_onchain_id" VARCHAR(255) NOT NULL,
-	"submitter_address" VARCHAR(255) NOT NULL,
 	"position_index" SMALLINT NOT NULL,
-	"signers_address" VARCHAR(255) [] NOT NULL
+	PRIMARY KEY(
+		"document_content_hash",
+		"signers_address",
+		"division_onchain_id",
+		"position_index"
+	)
 );

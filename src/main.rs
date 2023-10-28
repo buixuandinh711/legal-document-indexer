@@ -5,7 +5,7 @@ mod event_handler;
 mod utils;
 
 use crate::event_handler::{
-    division_manager::handle_division_created, document_manager::handle_document_submitted,
+    division_manager::handle_division_created, document_manager::handle_document_published,
     officer_manager::handle_officer_created, position_manager::handle_position_created,
 };
 use contracts::legal_document_manager::{self, LegalDocumentManagerEvents};
@@ -50,7 +50,8 @@ pub async fn index_event(chain_rpc_url: String, legal_document_address: String, 
 
     tokio::fs::write("latest_block", 0.to_string().as_bytes())
         .await
-        .unwrap();
+        .unwrap(); //reset to 0 for testing only
+
     log::info!("Indexer started");
 
     loop {
@@ -95,8 +96,8 @@ pub async fn index_event(chain_rpc_url: String, legal_document_address: String, 
                 (LegalDocumentManagerEvents::PositionCreatedFilter(event), meta) => {
                     handle_position_created(&db_pool, event, meta).await;
                 }
-                (LegalDocumentManagerEvents::DocumentSubmittedFilter(event), meta) => {
-                    handle_document_submitted(&db_pool, event, meta, &client).await;
+                (LegalDocumentManagerEvents::DocumentPublishedFilter(event), meta) => {
+                    handle_document_published(&db_pool, event, meta).await;
                 }
                 _ => {}
             }

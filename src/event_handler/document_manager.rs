@@ -1,45 +1,40 @@
 use crate::{
-    contracts::legal_document_manager::DocumentSubmittedFilter,
-    db_operation::onchain_documents::{create_document, CreateDocumentInfo},
+    contracts::legal_document_manager::{self, DocumentPublishedFilter},
+    db_operation::onchain_documents::{self, create_document, CreateDocumentInfo},
     utils,
 };
 use deadpool_postgres::Pool;
-use ethers::{
-    prelude::LogMeta,
-    providers::{JsonRpcClient, Middleware, Provider},
-};
+use ethers::prelude::LogMeta;
 
-pub async fn handle_document_submitted<T: JsonRpcClient>(
+impl From<legal_document_manager::OfficerPosition> for onchain_documents::OfficerPosition {
+    fn from(value: legal_document_manager::OfficerPosition) -> Self {
+        onchain_documents::OfficerPosition {
+            officer_address: utils::to_string_address(&value.officer_address),
+            division_onchain_id: value.division_id,
+            position_index: value.position_index.as_u32() as i16,
+        }
+    }
+}
+
+pub async fn handle_document_published(
     db_pool: &Pool,
-    event: DocumentSubmittedFilter,
-    meta: LogMeta,
-    provider: &Provider<T>,
+    event: DocumentPublishedFilter,
+    _meta: LogMeta,
 ) {
     let client = db_pool.get().await;
     match client {
         Ok(client) => {
-            let tx_hash = meta.transaction_hash;
-            let tx = provider.get_transaction(tx_hash).await;
-            if tx.is_err() {
-                log::error!("Handler: handle_document_submitted get tx");
-                return;
-            }
-            let tx = tx.unwrap();
-            if tx.is_none() {
-                log::error!("Handler: handle_document_submitted tx not found");
-                return;
-            }
-            let tx = tx.unwrap();
-            let submitter = tx.from;
             let document_info = CreateDocumentInfo {
-                hash: utils::to_string_hash(&event.document_hash),
-                onchain_division_id: event.division_id,
-                submitter_address: utils::to_string_address(&submitter),
-                position_index: event.position_index.as_usize() as i16,
-                signers_address: event
+                document_content_hash: utils::to_string_hash(&event.document_content_hash),
+                number: event.document_info.number,
+                name: event.document_info.name,
+                division_id: event.document_info.division_id,
+                published_timestamp: event.document_info.published_timestamp.as_u32() as i32,
+                publisher: event.publisher.into(),
+                signers: event
                     .signers
-                    .iter()
-                    .map(|s| utils::to_string_address(s))
+                    .into_iter()
+                    .map(|signer| signer.into())
                     .collect(),
             };
             let _ = create_document(&client, &document_info).await;

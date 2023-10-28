@@ -1,5 +1,5 @@
-DROP SCHEMA public CASCADE;
-CREATE SCHEMA public;
-GRANT ALL ON SCHEMA public TO postgres;
-GRANT ALL ON SCHEMA public TO public;
-COMMENT ON SCHEMA public IS 'standard public schema';
+DROP TABLE IF EXISTS "onchain_document_signatures";
+DROP TABLE IF EXISTS "onchain_documents";
+DROP TABLE IF EXISTS "onchain_positions";
+DROP TABLE IF EXISTS "onchain_divisions";
+DROP TABLE IF EXISTS "onchain_officers";
