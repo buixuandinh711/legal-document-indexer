@@ -36,8 +36,9 @@ CREATE TABLE IF NOT EXISTS "onchain_documents" (
 	"document_content_hash" VARCHAR(255) NOT NULL UNIQUE,
 	"number" VARCHAR(255) NOT NULL,
 	"name" VARCHAR(255) NOT NULL,
+	"doc_type" VARCHAR(255) NOT NULL,
 	"division_id" VARCHAR(255) NOT NULL,
-	"publishedTimestamp" INT NOT NULL,
+	"published_timestamp" INT NOT NULL,
 	"publisher_address" VARCHAR(255) NOT NULL,
 	"publisher_division_id" VARCHAR(255) NOT NULL,
 	"publisher_position_index" SMALLINT NOT NULL

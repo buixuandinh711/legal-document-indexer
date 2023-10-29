@@ -28,6 +28,7 @@ pub async fn handle_document_published(
                 document_content_hash: utils::to_string_hash(&event.document_content_hash),
                 number: event.document_info.number,
                 name: event.document_info.name,
+                doc_type: event.document_info.doc_type,
                 division_id: event.document_info.division_id,
                 published_timestamp: event.document_info.published_timestamp.as_u32() as i32,
                 publisher: event.publisher.into(),
