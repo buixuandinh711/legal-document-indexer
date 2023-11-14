@@ -3,7 +3,6 @@ DROP TABLE IF EXISTS "onchain_documents";
 DROP TABLE IF EXISTS "onchain_positions";
 DROP TABLE IF EXISTS "onchain_divisions";
 DROP TABLE IF EXISTS "onchain_officers";
-
 CREATE TABLE "onchain_officers"(
 	"id" BIGSERIAL PRIMARY KEY,
 	"address" VARCHAR(255) NOT NULL UNIQUE,
@@ -38,7 +37,7 @@ CREATE TABLE IF NOT EXISTS "onchain_documents" (
 	"name" VARCHAR(255) NOT NULL,
 	"doc_type" VARCHAR(255) NOT NULL,
 	"division_id" VARCHAR(255) NOT NULL,
-	"published_timestamp" INT NOT NULL,
+	"published_timestamp" TIMESTAMP NOT NULL,
 	"publisher_address" VARCHAR(255) NOT NULL,
 	"publisher_division_id" VARCHAR(255) NOT NULL,
 	"publisher_position_index" SMALLINT NOT NULL

@@ -1,3 +1,5 @@
+use std::time::SystemTime;
+
 use deadpool_postgres::Client;
 use tokio_postgres::types::ToSql;
 
@@ -15,7 +17,7 @@ pub struct CreateDocumentInfo {
     pub name: String,
     pub doc_type: String,
     pub division_id: String,
-    pub published_timestamp: i32,
+    pub published_timestamp: SystemTime,
     pub publisher: OfficerPosition,
     pub signers: Vec<OfficerPosition>,
 }

@@ -97,7 +97,7 @@ pub async fn index_event(chain_rpc_url: String, legal_document_address: String, 
                     handle_position_created(&db_pool, event, meta).await;
                 }
                 (LegalDocumentManagerEvents::DocumentPublishedFilter(event), meta) => {
-                    handle_document_published(&db_pool, event, meta).await;
+                    handle_document_published(&db_pool, event, meta, &client).await;
                 }
                 _ => {}
             }
